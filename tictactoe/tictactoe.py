@@ -18,11 +18,10 @@ class Board:
     def print_board(self):
         print()
         print('  A   B   C')
-        self._print_board_row(self.show[0], 1)
-        print(' -----------')
-        self._print_board_row(self.show[1], 2)
-        print(' -----------')
-        self._print_board_row(self.show[2], 3)
+        for i in range(0, len(self.show)):                
+            self._print_board_row(self.show[i], i+1)
+            if i < len(self.show)-1:
+                print(' -----------')
 
 class Game:
     state = {}
@@ -75,11 +74,17 @@ class Game:
         for row in board:
             board_seg.append(row)
         
-        board_seg.append([board[0][0], board[1][0], board[2][0]]) # col 1
-        board_seg.append([board[0][1], board[1][1], board[2][1]]) # col 2
-        board_seg.append([board[0][2], board[1][2], board[2][2]]) # col 3
-        board_seg.append([board[0][0], board[1][1], board[2][2]]) # diag 1
-        board_seg.append([board[0][2], board[1][1], board[2][0]]) # diag 2
+        for col in zip(*board):
+            board_seg.append(col)
+
+        diag1 = []
+        diag2 = []
+        for i in range(0, len(board)):
+            diag1.append(board[i][i])
+            diag2.append(board[i][len(board)-i-1])
+
+        board_seg.append(diag1)
+        board_seg.append(diag2)
 
         for seg in board_seg:
             xwin = self.players[0] * 3 == sum(seg)
