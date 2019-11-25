@@ -1,16 +1,16 @@
 import os
 
-BOARD_START = [[' ', ' ', ' '],  [' ', ' ', ' '], [' ', ' ', ' ']]
-
 class Board:
     state = []
+    show = []
 
     def __init__(self):
-        # self.state = [[-1, -1, -1],[-1, -1, -1], [-1, -1,-1]]
-        self.state = [[' ', ' ', ' '],  [' ', ' ', ' '], [' ', ' ', ' ']]
+        self.state = [[0, 0, 0],[0, 0, 0], [0, 0, 0]]
+        self.show = [[' ', ' ', ' '],  [' ', ' ', ' '], [' ', ' ', ' ']]
 
-    def update(self, player, move):
-        pass
+    def update(self, loc, player, letter):
+        self.state[loc[0]][loc[1]] = player
+        self.show[loc[0]][loc[1]] = letter
 
     def _print_board_row(self, board_row, rowId: int):
         print(f'{rowId} {board_row[0]} | {board_row[1]} | {board_row[2]}')
@@ -18,16 +18,17 @@ class Board:
     def print_board(self):
         print()
         print('  A   B   C')
-        self._print_board_row(self.state[0], 1)
+        self._print_board_row(self.show[0], 1)
         print(' -----------')
-        self._print_board_row(self.state[1], 2)
+        self._print_board_row(self.show[1], 2)
         print(' -----------')
-        self._print_board_row(self.state[2], 3)
+        self._print_board_row(self.show[2], 3)
 
 class Game:
     state = {}
     board = []
     player_letters = ['X', 'O']
+    players = [-1, 1]
 
     def __init__(self):
         self.board = Board()
@@ -46,7 +47,7 @@ class Game:
         self.board.print_board()
         move = self.get_next_move()
         loc = self.parse_move(move)
-        self.update_board(loc)
+        self.update_board(loc, )
         self.update_player()
 
     def _reset_screen(self):
@@ -63,7 +64,7 @@ class Game:
         return (row, col)
 
     def update_board(self, loc):
-        self.board.state[loc[0]][loc[1]] = self.player_letters[self.state['activePlayerIdx']]
+        self.board.update(loc, self.players[self.state['activePlayerIdx']], self.player_letters[self.state['activePlayerIdx']])
 
     def update_player(self):
         self.state['activePlayerIdx'] = 1 - self.state['activePlayerIdx']
@@ -81,8 +82,8 @@ class Game:
         board_seg.append([board[0][2], board[1][1], board[2][0]]) # diag 2
 
         for seg in board_seg:
-            xwin = self.player_letters[0] * 3 == ''.join(seg).strip()
-            owin = self.player_letters[1] * 3 == ''.join(seg).strip()
+            xwin = self.players[0] * 3 == sum(seg)
+            owin = self.players[1] * 3 == sum(seg)
             if xwin or owin:
                 self._reset_screen()
                 self.board.print_board()
@@ -100,4 +101,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
