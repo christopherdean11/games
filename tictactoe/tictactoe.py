@@ -32,6 +32,14 @@ class Game:
     def __init__(self):
         self.board = Board()
         self.state['activePlayerIdx'] = 0
+        resp = input('Set player letters y/[n]: ')
+        if resp == 'y':
+            self.get_player_letters()
+
+    def get_player_letters(self):
+        player1 = input('Player 1, enter your letter: ')
+        player2 = input('Player 2, enter your letter: ')
+        self.player_letters = [player1, player2]
 
     def tick(self):
         self._reset_screen()
@@ -51,6 +59,7 @@ class Game:
         # must be formatted as 'A1'
         col = ord(move[0]) - ord('A')
         row = int(move[1]) - 1
+        # have to verify move is available on the board
         return (row, col)
 
     def update_board(self, loc):
@@ -69,16 +78,16 @@ class Game:
         board_seg.append([board[0][1], board[1][1], board[2][1]]) # col 2
         board_seg.append([board[0][2], board[1][2], board[2][2]]) # col 3
         board_seg.append([board[0][0], board[1][1], board[2][2]]) # diag 1
-        board_seg.append([board[0][2], board[1][1], board[0][2]]) # diag 2
+        board_seg.append([board[0][2], board[1][1], board[2][0]]) # diag 2
 
         for seg in board_seg:
-            xwin = 'XXX' == ''.join(seg).strip()
-            owin = 'OOO' == ''.join(seg).strip()
+            xwin = self.player_letters[0] * 3 == ''.join(seg).strip()
+            owin = self.player_letters[1] * 3 == ''.join(seg).strip()
             if xwin or owin:
                 self._reset_screen()
                 self.board.print_board()
-                player_letter = 'X' if xwin else 'O'
-                print(f'Game Over. {player_letter} wins!')
+                winner_letter = self.player_letters[0] if xwin else self.player_letters[1]
+                print(f'Game Over. {winner_letter} wins!')
                 return True
         return False
 
