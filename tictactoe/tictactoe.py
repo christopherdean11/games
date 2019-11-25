@@ -33,6 +33,14 @@ class Game:
         self.board = Board()
         self.state['activePlayerIdx'] = 0
 
+    def tick(self):
+        self._reset_screen()
+        self.board.print_board()
+        move = self.get_next_move()
+        loc = self.parse_move(move)
+        self.update_board(loc)
+        self.update_player()
+
     def _reset_screen(self):
         os.system('clear')
 
@@ -51,7 +59,7 @@ class Game:
     def update_player(self):
         self.state['activePlayerIdx'] = 1 - self.state['activePlayerIdx']
 
-    def check_winner(self):
+    def is_over(self):
         board_seg = []
         board = self.board.state
         for row in board:
@@ -77,13 +85,8 @@ class Game:
 def main():
     game = Game()
     while True:
-        game._reset_screen()
-        game.board.print_board()
-        move = game.get_next_move()
-        loc = game.parse_move(move)
-        game.update_board(loc)
-        game.update_player()
-        if game.check_winner():
+        game.tick()
+        if game.is_over():
             return
 
 if __name__ == "__main__":
