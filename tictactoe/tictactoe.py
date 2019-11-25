@@ -5,15 +5,16 @@ class Board:
     show = []
 
     def __init__(self):
-        self.state = [[0, 0, 0],[0, 0, 0], [0, 0, 0]]
-        self.show = [[' ', ' ', ' '],  [' ', ' ', ' '], [' ', ' ', ' ']]
+        # self.state = [[0, 0, 0],[0, 0, 0], [0, 0, 0]]
+        self.state = [[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0],[0, 0, 0, 0]]
+        self.show = [[' ', ' ', ' ', ' '],  [' ', ' ', ' ', ' '], [' ', ' ', ' ', ' '],[' ', ' ', ' ', ' ']]
 
     def update(self, loc, player, letter):
         self.state[loc[0]][loc[1]] = player
         self.show[loc[0]][loc[1]] = letter
 
     def _print_board_row(self, board_row, rowId: int):
-        print(f'{rowId} {board_row[0]} | {board_row[1]} | {board_row[2]}')
+        print(f'{rowId} {board_row[0]} | {board_row[1]} | {board_row[2]} | {board_row[3]}')
 
     def print_board(self):
         print()
@@ -28,6 +29,7 @@ class Game:
     board = []
     player_letters = ['X', 'O']
     players = [-1, 1]
+    board_size = 4
 
     def __init__(self):
         self.board = Board()
@@ -87,8 +89,8 @@ class Game:
         board_seg.append(diag2)
 
         for seg in board_seg:
-            xwin = self.players[0] * 3 == sum(seg)
-            owin = self.players[1] * 3 == sum(seg)
+            xwin = self.players[0] * self.board_size == sum(seg)
+            owin = self.players[1] * self.board_size == sum(seg)
             if xwin or owin:
                 self._reset_screen()
                 self.board.print_board()
