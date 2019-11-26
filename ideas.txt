@@ -1,0 +1,2 @@
+* a 4x4 grid with "win at 3" has more diagonals than the standard X pattern of 2 diagonals
+* add a computer player
