@@ -5,6 +5,7 @@ def main():
     while True:
         game.tick()
         if game.is_over():
+            game.print_winner()
             return
 
 def debug():

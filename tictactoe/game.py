@@ -8,6 +8,7 @@ class Game:
     players = [-1, 1]
     board_size = 3
     connect_to_win = 3
+    winner = ''
 
     def __init__(self):
         self._welcome()
@@ -108,21 +109,23 @@ class Game:
         player2 = input('Player 2, enter your letter: ')
         self.player_letters = [player1, player2]
 
+    def print_winner(self):
+        self._reset_screen()
+        self.board.print_board()
+        print(f'Game Over. {self.winner} wins!')
+
     def is_over(self):
         board_seg = []
         board = self.board.state
+        
+        # get each row as a segment
         for row in board:
             board_seg.append(row)
         # transpose and check again to get columns
         for col in zip(*board):
             board_seg.append(col)
-
-
-        # for i in range(0, len(board)):
-        #     # need to add board[i][i+1] etc for additional diags
-        #     diag1.append(board[i][i])
-        #     diag2.append(board[i][len(board)-i-1])
-
+        
+        # get diagonals - top left to bottom right, moving down
         diag1 = dict()
         for offset in range(0, self.board_size - self.connect_to_win + 1):
             for i in range(0, self.board_size - offset):
@@ -130,6 +133,7 @@ class Game:
                     diag1[offset] = []
                 diag1[offset].append(board[i+offset][i])
 
+        # get diagonals - top left to bottom right, moving right, start at one to skip main diagonal (is in diag3)
         diag2 = dict()
         for offset in range(1, self.board_size - self.connect_to_win + 1):
             for i in range(0, self.board_size - offset):
@@ -137,6 +141,7 @@ class Game:
                     diag2[offset] = []
                 diag2[offset].append(board[i][i+offset])
 
+        # get diagonals - bottom left to top right, moving up
         diag3 = dict()
         for offset in range(0, self.board_size - self.connect_to_win + 1):
             for i in range(0, self.board_size - offset):
@@ -144,6 +149,7 @@ class Game:
                     diag3[offset] = []
                 diag3[offset].append(board[self.board_size - 1 - i - offset][i])
 
+        # get diagonals - bottom left to top right, moving right, start at one to skip main diagonal (is in diag3)
         diag4 = dict()
         for offset in range(1, self.board_size - self.connect_to_win + 1):
             for i in range(0, self.board_size - offset):
@@ -164,27 +170,21 @@ class Game:
             board_seg.append(d)
 
         for seg in board_seg:
-            xwin = 0
-            owin = 0
+            xcount = 0
+            ocount = 0
             for i in range(len(seg)):
                 if self.players[0] == seg[i]:
-                    xwin = xwin + 1
+                    xcount = xcount + 1
                 else:
-                    # reset xwin counter if not equal to ensure win only when N number in a row
-                    xwin = 0
+                    # reset xcount counter if not equal to ensure win only when N number in a row
+                    xcount = 0
                 if self.players[1] == seg[i]:
-                    owin = owin + 1
+                    ocount = ocount + 1
                 else:
-                    # reset owin counter, same as xwin reset
-                    owin = 0
+                    # reset ocount counter, same as xwin reset
+                    ocount = 0
                 
-                if xwin >= self.connect_to_win or owin >= self.connect_to_win:
-                # xwin = [self.players[0]] * self.connect_to_win in seg
-                # owin = [self.players[1]] * self.connect_to_win in seg
-                # if xwin or owin:
-                    self._reset_screen()
-                    self.board.print_board()
-                    winner_letter = self.player_letters[0] if xwin else self.player_letters[1]
-                    print(f'Game Over. {winner_letter} wins!')
+                if xcount >= self.connect_to_win or ocount >= self.connect_to_win:
+                    self.winner =  self.player_letters[0] if xcount else self.player_letters[1]
                     return True
         return False
