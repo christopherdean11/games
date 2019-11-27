@@ -2,47 +2,21 @@ import os
 from board import Board
 
 class Game:
-    state = {}
-    board = []
-    player_letters = ['X', 'O']
+    # internal use
+    state = dict() # empty dictionary
+    board = []     # empty list
     players = [-1, 1]
+    winner = ''
+    # configuration
+    player_letters = ['X', 'O']
     board_size = 3
     connect_to_win = 3
-    winner = ''
 
-    def __init__(self):
-        self._welcome()
+    def __init__(self, config:dict = None):
         self.state['activePlayerIdx'] = 0
-        self._configure_game()
+        self._welcome()
+        self._configure_game(config)
         self.board = Board(self.board_size)
-    
-    def _configure_game(self):
-        resp = input('Use custom player letters? y/[n]: ')
-        if resp == 'y':
-            self.get_player_letters()
-        resp = input('What size board? [3]: ')
-        if resp == '':
-            self.board_size = 3
-        else:
-            self.board_size = int(resp)
-        cont = True
-        while cont:
-            resp = input(f'How many to connect to win? [{self.board_size}]: ')
-            if resp == '':
-                resp = self.board_size
-            try:
-                self.connect_to_win = int(resp)
-                cont = False
-            except ValueError:
-                continue
-
-
-    def _welcome(self):
-        self._reset_screen()
-        print('==========================')
-        print('    Tic Tac Toe 3000!')
-        print()
-        print('Game Configuration')
 
     def tick(self):
         self._reset_screen()
@@ -60,36 +34,9 @@ class Game:
             print('Invalid move, space not available. Try again.')
             move = self._get_user_move_input()
         return move
-
-    def _get_user_move_input(self):
-        resp = input(f"Player {self.player_letters[self.state['activePlayerIdx']]}, enter move: ")
-        while not self._is_response_valid(resp):
-            print('Invalid input format. Try again. Must be formatted as A1')
-            resp = input(f"Player {self.player_letters[self.state['activePlayerIdx']]}, enter move: ")
-        return self.parse_move(resp)
-
+    
     def is_valid_move(self, possible_move):
         return self.board.state[possible_move[0]][possible_move[1]] == 0
-
-    def _is_response_valid(self, possible_move):
-        if len(possible_move) != 2:
-            # must two characters
-            return False
-        try:
-            int(possible_move[1])
-        except ValueError:
-            # second character is not an int
-            return False
-        
-        if not possible_move[0].isalpha():
-            # first character is not A-Z
-            return False
-
-        if possible_move[0].islower():
-            return False
-
-        return True
-
 
     def parse_move(self, move):
         # must be formatted as 'A1'
@@ -103,11 +50,6 @@ class Game:
 
     def update_player(self):
         self.state['activePlayerIdx'] = 1 - self.state['activePlayerIdx']
-
-    def get_player_letters(self):
-        player1 = input('Player 1, enter your letter: ')
-        player2 = input('Player 2, enter your letter: ')
-        self.player_letters = [player1, player2]
 
     def print_winner(self):
         self._reset_screen()
@@ -188,3 +130,72 @@ class Game:
                     self.winner =  self.player_letters[0] if xcount else self.player_letters[1]
                     return True
         return False
+    
+    # --- Private Methods  ---------------------------------------------------------
+
+    def _configure_game(self, config:dict = None):
+        if config is None:
+            resp = input('Use custom player letters? y/[n]: ')
+            if resp == 'y':
+                self._get_player_letters()
+            resp = input('What size board? [3]: ')
+            if resp == '':
+                self.board_size = 3
+            else:
+                self.board_size = int(resp)
+            cont = True
+            while cont:
+                resp = input(f'How many to connect to win? [{self.board_size}]: ')
+                if resp == '':
+                    resp = self.board_size
+                try:
+                    self.connect_to_win = int(resp)
+                    cont = False
+                except ValueError:
+                    continue
+        else:
+            pass
+            self.player_letters = config['player_letters']
+            self.board_size = config['board_size']
+            self.connect_to_win = config['winning_run_length']
+            
+
+    def _welcome(self):
+        self._reset_screen()
+        print('==========================')
+        print('    Tic Tac Toe 3000!')
+        print()
+        print('Game Configuration')
+
+    def _get_player_letters(self):
+        player1 = input('Player 1, enter your letter: ')
+        player2 = input('Player 2, enter your letter: ')
+        self.player_letters = [player1, player2]
+
+    def _is_response_valid(self, new_move_response):
+        if len(new_move_response) != 2:
+            # must two characters
+            return False
+        try:
+            int(new_move_response[1])
+        except ValueError:
+            # second character is not an int
+            return False
+        
+        if not new_move_response[0].isalpha():
+            # first character is not A-Z
+            return False
+
+        if new_move_response[0].islower():
+            return False
+
+        return True
+
+    def _get_user_move_input(self):
+        resp = input(f"Player {self.player_letters[self.state['activePlayerIdx']]}, enter move: ")
+        if resp == 'quit':
+            raise SystemExit # completely quit the application
+        while not self._is_response_valid(resp):
+            print('Invalid input format. Try again. Must be formatted as A1')
+            resp = input(f"Player {self.player_letters[self.state['activePlayerIdx']]}, enter move: ")
+        return self.parse_move(resp)

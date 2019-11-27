@@ -1,0 +1,5 @@
+{
+    "player_letters": ["A", "C"],
+    "board_size": 3,
+    "winning_run_length": 3
+}

@@ -1,7 +1,8 @@
 from game import Game
+import json
 
-def main():
-    game = Game()
+def main(config:dict=None):
+    game = Game(config)
     while True:
         game.tick()
         if game.is_over():
@@ -15,5 +16,7 @@ def debug():
     game.is_over()
 
 if __name__ == "__main__":
-    main()
+    with open('tictactoe/configs.json') as f:
+        c = json.load(f)
+    main(c)
     # debug()
