@@ -1,2 +1,6 @@
-* a 4x4 grid with "win at 3" has more diagonals than the standard X pattern of 2 diagonals
+TODO:
 * add a computer player
+* add more than 2 players
+
+DONE:
+* implement generic solution to NxN grid with M length connection to win
