@@ -14,7 +14,7 @@ class Game:
 
     def __init__(self, config:dict = None):
         self.state['activePlayerIdx'] = 0
-        self._welcome()
+        self._welcome(config)
         self._configure_game(config)
         self.board = Board(self.board_size)
 
@@ -24,9 +24,6 @@ class Game:
         move = self.get_next_move()
         self.update_board(move)
         self.update_player()
-
-    def _reset_screen(self):
-        os.system('clear')
 
     def get_next_move(self):
         move = self._get_user_move_input()
@@ -132,6 +129,19 @@ class Game:
         return False
     
     # --- Private Methods  ---------------------------------------------------------
+    def _reset_screen(self):
+        os.system('clear')
+
+    def _welcome(self, config=None):
+        if config is not None:
+            dbg = config.get('debug',False)
+            
+        if not dbg:
+            self._reset_screen()
+            print('==========================')
+            print('    Tic Tac Toe 3000!')
+            print()
+            print('Game Configuration')
 
     def _configure_game(self, config:dict = None):
         if config is None:
@@ -158,14 +168,6 @@ class Game:
             self.player_letters = config['player_letters']
             self.board_size = config['board_size']
             self.connect_to_win = config['winning_run_length']
-            
-
-    def _welcome(self):
-        self._reset_screen()
-        print('==========================')
-        print('    Tic Tac Toe 3000!')
-        print()
-        print('Game Configuration')
 
     def _get_player_letters(self):
         player1 = input('Player 1, enter your letter: ')
