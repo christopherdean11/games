@@ -5,7 +5,6 @@ class Board:
     show = []
 
     def __init__(self, size):
-        # self.state = [[0, 0, 0],[0, 0, 0], [0, 0, 0]]
         self.state =[[0 for y in range(size) ] for x in range(size)] 
         self.show = [[' ' for y in range(size) ] for x in range(size)]
         self.size = size
@@ -73,7 +72,6 @@ class Game:
         print('    Tic Tac Toe 3000!')
         print()
         print('Game Configuration')
-
 
     def tick(self):
         self._reset_screen()
@@ -149,14 +147,51 @@ class Game:
         for col in zip(*board):
             board_seg.append(col)
 
-        diag1 = []
-        diag2 = []
-        for i in range(0, len(board)):
-            diag1.append(board[i][i])
-            diag2.append(board[i][len(board)-i-1])
 
-        board_seg.append(diag1)
-        board_seg.append(diag2)
+        # for i in range(0, len(board)):
+        #     # need to add board[i][i+1] etc for additional diags
+        #     diag1.append(board[i][i])
+        #     diag2.append(board[i][len(board)-i-1])
+
+        diag1 = dict()
+        for offset in range(0, self.board_size - self.connect_to_win + 1):
+            for i in range(0, self.board_size - offset):
+                if offset not in diag1:
+                    diag1[offset] = []
+                diag1[offset].append(board[i+offset][i])
+
+        diag2 = dict()
+        for offset in range(1, self.board_size - self.connect_to_win + 1):
+            for i in range(0, self.board_size - offset):
+                if offset not in diag2:
+                    diag2[offset] = []
+                diag2[offset].append(board[i][i+offset])
+
+        diag3 = dict()
+        for offset in range(0, self.board_size - self.connect_to_win + 1):
+            for i in range(0, self.board_size - offset):
+                if offset not in diag3:
+                    diag3[offset] = []
+                diag3[offset].append(board[self.board_size - 1 - i - offset][i])
+
+        diag4 = dict()
+        for offset in range(1, self.board_size - self.connect_to_win + 1):
+            for i in range(0, self.board_size - offset):
+                if offset not in diag4:
+                    diag4[offset] = []
+                diag4[offset].append(board[self.board_size - 1 - i][i+offset])
+
+        for d in diag1.values():
+            board_seg.append(d)
+
+        for d in diag2.values():
+            board_seg.append(d)
+
+        for d in diag3.values():
+            board_seg.append(d)
+        
+        for d in diag4.values():
+            board_seg.append(d)
 
         for seg in board_seg:
             xwin = 0
@@ -164,17 +199,24 @@ class Game:
             for i in range(len(seg)):
                 if self.players[0] == seg[i]:
                     xwin = xwin + 1
+                else:
+                    # reset xwin counter if not equal to ensure win only when N number in a row
+                    xwin = 0
                 if self.players[1] == seg[i]:
                     owin = owin + 1
-            if xwin >= self.connect_to_win or owin >= self.connect_to_win:
-            # xwin = [self.players[0]] * self.connect_to_win in seg
-            # owin = [self.players[1]] * self.connect_to_win in seg
-            # if xwin or owin:
-                self._reset_screen()
-                self.board.print_board()
-                winner_letter = self.player_letters[0] if xwin else self.player_letters[1]
-                print(f'Game Over. {winner_letter} wins!')
-                return True
+                else:
+                    # reset owin counter, same as xwin reset
+                    owin = 0
+                
+                if xwin >= self.connect_to_win or owin >= self.connect_to_win:
+                # xwin = [self.players[0]] * self.connect_to_win in seg
+                # owin = [self.players[1]] * self.connect_to_win in seg
+                # if xwin or owin:
+                    self._reset_screen()
+                    self.board.print_board()
+                    winner_letter = self.player_letters[0] if xwin else self.player_letters[1]
+                    print(f'Game Over. {winner_letter} wins!')
+                    return True
         return False
 
 def main():
@@ -184,5 +226,12 @@ def main():
         if game.is_over():
             return
 
+def debug():
+    game = Game()
+    # game.board.state = [[0,1,2,3], [10, 11, 12, 13], [100, 101, 102, 103], [1000, 1001, 1002, 1003]]
+    game.board.state = [[0,1,0,-1], [-1,0,1,0],[-1,0,0,1],[0,0,0,0]]
+    game.is_over()
+
 if __name__ == "__main__":
     main()
+    # debug()
