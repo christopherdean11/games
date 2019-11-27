@@ -1,4 +1,5 @@
 TODO:
+* add game configuration dict/json to skip over prompts
 * add a computer player
 * add more than 2 players
 
