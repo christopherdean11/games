@@ -22,6 +22,7 @@ void Game::printWelcome(){
     return;
 }
 
+// Customize cout << operator for this class
 ostream & operator << (ostream& out, const Game  &g){
     out << "Game Setup: \n";
     out << "Player 1: " << g.player_letters[0] << "\n" ;
@@ -36,10 +37,13 @@ void Game::configureGame(){
     string resp;
     getline(cin, resp);
     if (resp == "y"){
+        string buf;
         cout << "\nPlayer 1, enter your letter: ";
-        cin >> player_letters[0];
+        getline(cin, buf);
+        player_letters[0] = buf[0];
         cout << "\nPlayer 2, enter your letter: ";
-        cin >> player_letters[1];
+        getline(cin, buf);
+        player_letters[1] = buf[0];
     }
 
     cout << "What board size? [3]: ";
