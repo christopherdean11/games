@@ -12,16 +12,12 @@ int main ()
   game.printWelcome();
   game.configureGame();
   std::cout << game;
-  int players[2] = {1,2};
-  // print board state
-  Board brd = Board(game.board_size);
-  //brd.printBoard(2, players, game.player_letters);
-  
-  int move[2] = {0,0};
-  game.getNextMove(move);
-  for (int i = 0; i < 2; i++){
-    std::cout << move[i] << ", ";
+  Board board = Board(game.board_size);
+  int nTurns = 0;
+  while (nTurns < 4){
+    game.tick(&board);
+    nTurns++;
   }
-  std::cout << std::endl;
+
   return 0;
 }

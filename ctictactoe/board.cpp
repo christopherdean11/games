@@ -2,19 +2,29 @@
 #include "screencmd.h"
 #include <iostream>
 
+
+Board::Board(){
+    board_size = 3;
+    initBoard();
+}
+
 Board::Board(int boardSize){
     board_size = boardSize;
+    initBoard();
+};
+
+Board::~Board(){
+    delete[] state;
+};
+
+void Board::initBoard(){
     //need a 2D array, will create a 1D and use 
     // array[i][j] == array[j*i + j] to access it
     state = new int[board_size * board_size];
     for (int i = 0; i < board_size*board_size; i++){
         state[i] = 0;
     }
-};
-
-Board::~Board(){
-    delete[] state;
-};
+}
 
 void Board::printBoard(int numPlayers, int players[2], char player_letters[2]){
     // print column headings

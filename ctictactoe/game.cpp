@@ -7,10 +7,12 @@ using namespace std;
 
 // Default Constructor 
 Game::Game(){
+    num_players = 2;
     player_letters[0]= 'X';
     player_letters[1] = 'O';
     board_size = 3;
     connect_to_win = 3;
+    current_player = 1;
 }
 
 // Print welcome message to screen
@@ -67,9 +69,11 @@ void Game::configureGame(){
 }
 
 void Game::getNextMove(int* move_out){
+    cout << "Player " << current_player << ", enter a move: ";
     string buf;
     getline(cin, buf);
     parseMove(buf, move_out);
+    return;
 }
 
 void Game::parseMove(string move_in, int* move_out){
@@ -80,5 +84,30 @@ void Game::parseMove(string move_in, int* move_out){
     row = move_in[1]; // 1 in A1
     move_out[0] = row - '0' - 1;
     move_out[1] = col - 'A';
+    return;
+}
+
+void Game::updateBoard(Board *board, int* move){
+    board->updateState(move[0], move[1], current_player);
+    return;
+}
+
+void Game::updateCurrentPlayer(){
+    current_player++;
+    if (current_player > num_players){
+        current_player = 1;
+    }
+    return;
+}
+
+void Game::tick(Board *board){
+    resetScreen();
+    int players[2] = {1,2};
+    int move[2] = {0,0};
+    // TODO: change printBoard to not need players array
+    board->printBoard(num_players, players, player_letters);
+    getNextMove(move);
+    updateBoard(board, move);
+    updateCurrentPlayer();
     return;
 }
