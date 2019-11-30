@@ -4,6 +4,7 @@
 #include "board.h"
 // built-in includes
 #include <iostream>
+#include <string>
 
 int main ()
 {
@@ -14,11 +15,13 @@ int main ()
   int players[2] = {1,2};
   // print board state
   Board brd = Board(game.board_size);
-  brd.printBoard(2, players, game.player_letters);
-  brd.updateState(0,1,players[0]);
-  brd.updateState(1,0,players[1]);
-  brd.updateState(0,2,players[0]);
-  brd.updateState(2,2,players[1]);
-  brd.printBoard(2, players, game.player_letters);
+  //brd.printBoard(2, players, game.player_letters);
+  
+  int move[2] = {0,0};
+  game.getNextMove(move);
+  for (int i = 0; i < 2; i++){
+    std::cout << move[i] << ", ";
+  }
+  std::cout << std::endl;
   return 0;
 }

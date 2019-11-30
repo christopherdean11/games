@@ -65,3 +65,20 @@ void Game::configureGame(){
 
     return;
 }
+
+void Game::getNextMove(int* move_out){
+    string buf;
+    getline(cin, buf);
+    parseMove(buf, move_out);
+}
+
+void Game::parseMove(string move_in, int* move_out){
+    // input in form A1
+    // convert to 0,0
+    int row, col;
+    col = move_in[0]; // A in A1
+    row = move_in[1]; // 1 in A1
+    move_out[0] = row - '0' - 1;
+    move_out[1] = col - 'A';
+    return;
+}
