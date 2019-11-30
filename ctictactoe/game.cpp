@@ -5,7 +5,7 @@
 
 using namespace std;
 
-// Default Constructor
+// Default Constructor 
 Game::Game(){
     player_letters[0]= 'X';
     player_letters[1] = 'O';
@@ -13,6 +13,7 @@ Game::Game(){
     connect_to_win = 3;
 }
 
+// Print welcome message to screen
 void Game::printWelcome(){
     resetScreen();
     std::cout << "==========================" << std::endl;
@@ -32,6 +33,7 @@ ostream & operator << (ostream& out, const Game  &g){
     return out;
 }
 
+// Configure game object with user input
 void Game::configureGame(){
     cout << "Use custom player letters? y/[n]: ";
     string resp;
