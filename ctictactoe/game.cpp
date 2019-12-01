@@ -13,6 +13,7 @@ Game::Game(){
     board_size = 3;
     connect_to_win = 3;
     current_player = 1;
+    winner = 0;
 }
 
 // Print welcome message to screen
@@ -110,4 +111,89 @@ void Game::tick(Board *board){
     updateBoard(board, move);
     updateCurrentPlayer();
     return;
+}
+
+bool Game::isOver(Board *board){
+    int segment[board_size];
+    // Check each row
+    for (int i = 0; i < board_size; i++){
+        for (int j = 0; j < board_size; j++){
+            segment[j] = board->state[board_size*i + j];
+        }
+        if (segmentHasWinner(segment)){
+            return true;
+        }
+    }
+    // check each column
+    for (int i = 0; i < board_size; i++){
+        for (int j = 0; j < board_size; j++){
+            segment[j] = board->state[board_size*j + i];
+        }
+        if (segmentHasWinner(segment)){
+            return true;
+        }
+    }
+
+    // diagonal 1 - top left to bottom right, moving down
+    for (int i = 0; i < board_size; i++){
+        segment[i] = board->state[board_size*i + i];
+        if (segmentHasWinner(segment)){
+            return true;
+        }
+    }
+
+    // diagonal 2 -  top right to bottom left
+    for (int i = 0; i < board_size; i++){
+        segment[i] = board->state[board_size-1-i + board_size*i];
+        if (segmentHasWinner(segment)){
+            return true;
+        }
+    }
+
+    
+    return false;
+}
+
+bool Game::segmentHasWinner(int *segment){
+    // initialize count var, used to contain number of 
+    // player[i] spots in a row on the board
+    int count[num_players];
+    for (int i = 0; i < num_players; i++){
+        count[i] = 0;
+    }
+
+    // Loop over segment to look for a winner
+    for (int i = 0; i < board_size; i++){
+        // If element indicates player1, inc player1 count
+        if ((segment[i] > 0) && (segment[i] == 1)){
+            count[0]++;
+        // If element is no move or is player2, reset count
+        }else{
+            count[0] = 0;
+        }
+        // If element indicates player2, inc player2 count
+        if ((segment[i] > 0) && (segment[i] == 2)){
+            count[1]++;
+        // If element is no move or is player1, reset count
+        }else{
+            count[1] = 0;
+        }
+
+        // Check winner each loop
+        // winner could be early if connect_to_win < board_size
+        if (count[0] >= connect_to_win){
+            winner = 1;
+            break;
+        }
+        if (count[1] >= connect_to_win){
+            winner = 2;
+            break;
+        }
+    }
+    return (winner > 0);
+}
+
+void Game::printWinner(){
+    resetScreen();
+    cout << "Player " << winner << " ( " << player_letters[winner-1] << " ) wins the game!" << endl;
 }

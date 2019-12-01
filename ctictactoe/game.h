@@ -17,6 +17,7 @@ class Game {
         // Board board;
         char player_letters[2];
         int board_size;
+        int winner;
         Game(); // constructor
         void configureGame();
         void printWelcome();
@@ -24,6 +25,9 @@ class Game {
         void updateBoard(Board *board, int move[]);
         void updateCurrentPlayer();
         void tick(Board *board);
+        bool isOver(Board *board);
+        bool segmentHasWinner(int *segment);
+        void printWinner();
 
         friend std::ostream& operator<<(std::ostream& os, const Game& dt); // "cout <<" overload
 };

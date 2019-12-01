@@ -11,13 +11,10 @@ int main ()
   Game game = Game();
   game.printWelcome();
   game.configureGame();
-  std::cout << game;
   Board board = Board(game.board_size);
-  int nTurns = 0;
-  while (nTurns < 4){
+  while (!game.isOver(&board)){
     game.tick(&board);
-    nTurns++;
   }
-
+  game.printWinner();
   return 0;
 }
