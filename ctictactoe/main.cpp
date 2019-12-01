@@ -1,5 +1,4 @@
 // project includes
-#include "screencmd.h"
 #include "game.h"
 #include "board.h"
 // built-in includes
@@ -12,7 +11,7 @@ int main ()
   game.printWelcome();
   game.configureGame();
   Board board = Board(game.board_size);
-
+  
   while (true){
     game.tick(&board);
     if (game.isOver(&board)){

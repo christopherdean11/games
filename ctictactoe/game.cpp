@@ -114,6 +114,11 @@ void Game::tick(Board *board){
 }
 
 bool Game::isOver(Board *board){
+    // TODO:
+    // - add "full" diagonal checking from python version
+    // to support any run length on any sized board
+
+
     int segment[board_size];
     // Check each row
     for (int i = 0; i < board_size; i++){
@@ -134,7 +139,7 @@ bool Game::isOver(Board *board){
         }
     }
 
-    // diagonal 1 - top left to bottom right, moving down
+    // diagonal 1 - top left to bottom right
     for (int i = 0; i < board_size; i++){
         segment[i] = board->state[board_size*i + i];
         if (segmentHasWinner(segment)){
@@ -149,8 +154,6 @@ bool Game::isOver(Board *board){
             return true;
         }
     }
-
-    
     return false;
 }
 
