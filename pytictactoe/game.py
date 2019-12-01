@@ -133,10 +133,11 @@ class Game:
         os.system('clear')
 
     def _welcome(self, config=None):
+        tstmode = False
         if config is not None:
-            dbg = config.get('debug',False)
-            
-        if not dbg:
+            tstmode = config.get('test',False)
+             
+        if not tstmode:
             self._reset_screen()
             print('==========================')
             print('    Tic Tac Toe 3000!')

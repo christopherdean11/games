@@ -11,10 +11,10 @@ def main():
 
 def debug():
     cfg = {
-        "player_letters":["X", "O"],
+        "player_letters":["A", "B"],
         "board_size": 4,
         "winning_run_length": 3,
-        "debug": True
+        "test": True
     }
     game = Game(cfg)
     # game.board.state = [[0,1,2,3], [10, 11, 12, 13], [100, 101, 102, 103], [1000, 1001, 1002, 1003]]
@@ -23,5 +23,5 @@ def debug():
     game.print_winner()
 
 if __name__ == "__main__":
-    # main()
-    debug()
+    main()
+    # debug()

@@ -12,9 +12,12 @@ int main ()
   game.printWelcome();
   game.configureGame();
   Board board = Board(game.board_size);
-  while (!game.isOver(&board)){
+
+  while (true){
     game.tick(&board);
+    if (game.isOver(&board)){
+      game.printWinner();
+      return 0;
+    }
   }
-  game.printWinner();
-  return 0;
 }

@@ -33,15 +33,21 @@ void Board::printBoard(int numPlayers, int players[2], char player_letters[2]){
     std::cout << " ";
     for (int i=0; i < board_size; i++){
         c = 'A' + i;
-        std::cout << "  " << c ;
+        std::cout << " | " << c ;
     }
-    std::cout << std::endl;
+    std::cout << " | " << std::endl;
 
     // loop over rows
     for (int i = 0; i < board_size; i++){
+        std::cout << "  -";
+        for (int i = 0; i<board_size; i++){
+            std::cout << "----";
+        }
+        std::cout << std::endl;
+
         // add row heading
         std::cout << i+1;
-        std::cout << "  ";
+        std::cout << " | ";
         // loop columns in row[i]
         for (int j = 0; j < board_size; j++){
             for (int p = 0; p < numPlayers; p++){
@@ -51,7 +57,7 @@ void Board::printBoard(int numPlayers, int players[2], char player_letters[2]){
                     break;
                 }
             }
-            std::cout << c << "  ";
+            std::cout << c << " | ";
         }
         // end the row with newline
         std::cout << std::endl;
