@@ -49,3 +49,21 @@ Continue playing until someone wins
 Game Over. X wins!
 ```
 
+Playing the game with a win length (number of connections in a row to win) less than the side length of the board is possible and can make for much more interesting gameplay than standard rules!   
+
+For example, a game could look something like this (board size = 6, win length = 4):  
+```
+  A   B   C   D   E   F  
+1   | X |   |   |   |   | 
+ ------------------------
+2   | X | X | O |   |   | 
+ ------------------------
+3   |   |   | X |   |   | 
+ ------------------------
+4   |   | O | O | X |   | 
+ ------------------------
+5   |   |   |   |   | O | 
+ ------------------------
+6   |   |   |   |   |   | 
+Game Over. X wins!
+```
