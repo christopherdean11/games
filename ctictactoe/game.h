@@ -5,28 +5,27 @@
 #include <iostream>
 #include <string>
 
-
 class Game {
     private:
         int current_player;
         int num_players;
         int connect_to_win;
+        int winner;
         void parseMove(std::string m, int* move_out);
+        bool segmentHasWinner(int *segment);
+        void updateCurrentPlayer();
+        void getNextMove(int* move_out);
+        void updateBoard(Board *board, int move[]);
 
     public:
-        // Board board;
-        char player_letters[2];
         int board_size;
-        int winner;
+        char player_letters[2];
+        
         Game(); // constructor
         void configureGame();
         void printWelcome();
-        void getNextMove(int* move_out);
-        void updateBoard(Board *board, int move[]);
-        void updateCurrentPlayer();
         void tick(Board *board);
         bool isOver(Board *board);
-        bool segmentHasWinner(int *segment);
         void printWinner();
 
         friend std::ostream& operator<<(std::ostream& os, const Game& dt); // "cout <<" overload
