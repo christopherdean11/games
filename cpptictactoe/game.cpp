@@ -72,6 +72,7 @@ void Game::configureGame(){
 void Game::getNextMove(Board *board, int* move_out){
     getMoveInput(move_out);
     while (!isValidMove(board, move_out)){
+        cout << "Invalid move, space already taken, try again\n";
         getMoveInput(move_out);
     }
     return;
@@ -231,7 +232,9 @@ bool Game::segmentHasWinner(int *segment){
     return (winner > 0);
 }
 
-void Game::printWinner(){
+void Game::printWinner(Board *board){
     resetScreen();
+    int players[2] = {1,2};
+    board->printBoard(num_players, players, player_letters);
     cout << "Player " << winner << " ( " << player_letters[winner-1] << " ) wins the game!" << endl;
 }

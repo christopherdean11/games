@@ -15,7 +15,7 @@ int main ()
   while (true){
     game.tick(&board);
     if (game.isOver(&board)){
-      game.printWinner();
+      game.printWinner(&board);
       return 0;
     }
   }

@@ -29,7 +29,7 @@ class Game {
         void printWelcome();
         void tick(Board *board);
         bool isOver(Board *board);
-        void printWinner();
+        void printWinner(Board *board);
 
         friend std::ostream& operator<<(std::ostream& os, const Game& dt); // "cout <<" overload
 };
