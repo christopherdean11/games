@@ -3,4 +3,4 @@
 **/venv/
 **/.pytest_cache/
 **/*.dSYM/
-ctictactoe/builds/
+cpptictactoe/builds/
