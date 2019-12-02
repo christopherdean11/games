@@ -1,7 +1,4 @@
 TODO:
-* add game configuration dict/json to skip over prompts
 * add a computer player
 * add more than 2 players
-
-DONE:
-* implement generic solution to NxN grid with M length connection to win
+* try with c++ std::vector ?
