@@ -14,7 +14,10 @@ class Game {
         void parseMove(std::string m, int* move_out);
         bool segmentHasWinner(int *segment);
         void updateCurrentPlayer();
-        void getNextMove(int* move_out);
+        void getNextMove(Board *board, int *move_out);
+        void getMoveInput(int *move_out);
+        bool isMoveInputValid(std::string buf);
+        bool isValidMove(Board *board, int move[]);
         void updateBoard(Board *board, int move[]);
 
     public:

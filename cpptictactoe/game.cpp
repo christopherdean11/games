@@ -69,12 +69,47 @@ void Game::configureGame(){
     return;
 }
 
-void Game::getNextMove(int* move_out){
+void Game::getNextMove(Board *board, int* move_out){
+    getMoveInput(move_out);
+    while (!isValidMove(board, move_out)){
+        getMoveInput(move_out);
+    }
+    return;
+}
+
+bool Game::isValidMove(Board *board, int move[]){
+    return board->state[board_size * move[0] + move[1]] == 0;
+}
+
+void Game::getMoveInput(int *move_out){
     cout << "Player " << current_player << ", enter a move: ";
     string buf;
     getline(cin, buf);
+    while (!isMoveInputValid(buf)){
+        char l = 'A'+board_size-1;
+        cout << "Invalid input format, try again. Input must be formatted like A1 (A1-"<< l << board_size << ")\n";
+        cout << "Player " << current_player << ", enter a move: ";
+        buf.empty();
+        getline(cin, buf);
+    }
+
     parseMove(buf, move_out);
-    return;
+}
+
+bool Game::isMoveInputValid(string buf){
+    // input must be two characters
+    if (buf.length() != 2){
+        return false;
+    }
+    // first value must be A-Z, compare as int in ascii table
+    if (buf[0] < 'A' || buf[0] > 'A' + board_size-1){
+        return false;
+    }
+    // second value must be 1-board_size
+    if (buf[1] < '1' || buf[1] > '1'+board_size){
+        return false;
+    }  
+    return true;
 }
 
 void Game::parseMove(string move_in, int* move_out){
@@ -107,7 +142,7 @@ void Game::tick(Board *board){
     int move[2] = {0,0};
     // TODO: change printBoard to not need players array
     board->printBoard(num_players, players, player_letters);
-    getNextMove(move);
+    getNextMove(board, move);
     updateBoard(board, move);
     updateCurrentPlayer();
     return;
