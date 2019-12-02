@@ -81,7 +81,3 @@ However, currently, this is not detected as a win in the same configuration (4x4
 4   |   |   |   | 
 ```
 This will be fixed in a future update.
-
-
-#### Move Entry
-Support for detecting an invalid move is currently not implemented, so a new move can overwrite a previous play, and malformed input is essentially thrown away and you lose your turn. `pytictactoe` has this implemented and is coming soon to `ctictactoe`. 
