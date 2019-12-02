@@ -43,10 +43,10 @@ void Game::configureGame(){
     getline(cin, resp);
     if (resp == "y"){
         string buf;
-        cout << "\nPlayer 1, enter your letter: ";
+        cout << "Player 1, enter your letter: ";
         getline(cin, buf);
         player_letters[0] = buf[0];
-        cout << "\nPlayer 2, enter your letter: ";
+        cout << "Player 2, enter your letter: ";
         getline(cin, buf);
         player_letters[1] = buf[0];
     }
