@@ -6,6 +6,15 @@
 //  Copyright © 2019 Christopher Dean. All rights reserved.
 //
 
+class Move{
+    let row: Int
+    let col: Int
+    init(_ row: Int,_ col: Int){
+        self.row = row
+        self.col = col
+    }
+}
+
 class Board{
     var state = [Int]()
     var board_size = 3
@@ -17,8 +26,19 @@ class Board{
         self.state = Array(repeating: 0, count: board_size * board_size)
     }
     
-    func lookupState(_ row: Int,_ col: Int) -> Int{
+    func lookupSingleSpace(_ row: Int,_ col: Int) -> Int{
         return self.state[row * self.board_size + col]
+    }
+    func lookupSegment(indexes: [Move]) -> [Int]{
+        var segment:[Int] = Array(repeating: 0, count: indexes.count)
+        for (i, loc) in indexes.enumerated(){
+            segment[i] = self.state[loc.row * self.board_size + loc.col]
+        }
+        return segment
+    }
+    
+    func update(move: (row: Int,col: Int), player: Player) {
+        self.state[move.row * self.board_size + move.col] = player.id
     }
     
     func printBoard(players: [Player]){
@@ -36,7 +56,7 @@ class Board{
                 var c = " "
                 for p in 0..<players.count {
                     // check if square[i,j] is owned by a player
-                    if (lookupState(i,j) == players[p].id){
+                    if (lookupSingleSpace(i,j) == players[p].id){
                         c = players[p].letter
                         // exit player loop if found
                         break
